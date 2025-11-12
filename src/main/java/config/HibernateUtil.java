@@ -1,6 +1,7 @@
 package config;
 
-import domain_actividad2.*;
+import domain.*;
+import domain2.Tag;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
@@ -31,27 +32,27 @@ public class HibernateUtil {
                     .build();
 
             // Sesion Factory para el ejercicio 1
-//            sessionFactory = new MetadataSources(registry)
-//                    .addAnnotatedClass(User.class)//entidades a cargar
-//                    .addAnnotatedClass(AccessCard.class)//entidades a cargar
-//                    .addAnnotatedClass(Space.class)//entidades a cargar
-//                    .addAnnotatedClass(Booking.class)
-//                    .addAnnotatedClass(Tag.class)
-//                    .addAnnotatedClass(Venue.class)
-//                    .buildMetadata()
-//                    .buildSessionFactory();
-
-            // Sesion Factory para el ejercicio 2
             sessionFactory = new MetadataSources(registry)
-                    .addAnnotatedClass(Arcade.class)//entidades a cargar
-                    .addAnnotatedClass(Cabinet.class)//entidades a cargar
-                    .addAnnotatedClass(Game.class)//entidades a cargar
-                    .addAnnotatedClass(Match.class)
+                    .addAnnotatedClass(User.class)//entidades a cargar
+                    .addAnnotatedClass(AccessCard.class)//entidades a cargar
+                    .addAnnotatedClass(Space.class)//entidades a cargar
+                    .addAnnotatedClass(Booking.class)
                     .addAnnotatedClass(Tag.class)
-                    .addAnnotatedClass(RfidCard.class)
-                    .addAnnotatedClass(Player.class)
+                    .addAnnotatedClass(Venue.class)
                     .buildMetadata()
                     .buildSessionFactory();
+
+            // Sesion Factory para el ejercicio 2
+//            sessionFactory = new MetadataSources(registry)
+//                    .addAnnotatedClass(Arcade.class)//entidades a cargar
+//                    .addAnnotatedClass(Cabinet.class)//entidades a cargar
+//                    .addAnnotatedClass(Game.class)//entidades a cargar
+//                    .addAnnotatedClass(Match.class)
+//                    .addAnnotatedClass(Tag.class)
+//                    .addAnnotatedClass(RfidCard.class)
+//                    .addAnnotatedClass(Player.class)
+//                    .buildMetadata()
+//                    .buildSessionFactory();
 
         }
     }

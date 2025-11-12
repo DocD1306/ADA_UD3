@@ -1,20 +1,26 @@
 package domain;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
 @Table(name = "venues")
+@Data
+@NamedQuery(
+        name="Venue.findByCity",
+        query = "FROM Venue s WHERE s.city = :city"
+)
 public class Venue {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "addess", nullable = false, length = 250)
-    private String addess;
+    @Column(name = "address", nullable = false, length = 250)
+    private String address;
 
     @Column(name = "city", nullable = false, length = 120)
     private String city;

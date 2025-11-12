@@ -1,4 +1,4 @@
-package domain_actividad2;
+package domain2;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -6,7 +6,8 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-@Entity(name = "rfid_cards")
+@Entity
+@Table(name = "rfid_cards")
 public class RfidCard {
 
     @Id

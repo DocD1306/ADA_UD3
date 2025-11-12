@@ -1,10 +1,13 @@
-package domain_actividad2;
+package domain2;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 import java.time.LocalDate;
 
-@Entity(name = "games")
+@Entity
+@Table(name = "games")
+@Data
 public class Game {
 
     @Id

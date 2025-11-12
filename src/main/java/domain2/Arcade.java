@@ -1,8 +1,11 @@
-package domain_actividad2;
+package domain2;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
-@Entity(name = "arcades")
+@Entity
+@Table(name = "arcades")
+@Data
 public class Arcade {
 
     @Id

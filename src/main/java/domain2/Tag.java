@@ -1,8 +1,11 @@
-package domain_actividad2;
+package domain2;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
-@Entity(name = "tags")
+@Entity
+@Data
+@Table(name = "tags")
 public class Tag {
 
     @Id

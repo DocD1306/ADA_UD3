@@ -1,4 +1,4 @@
-package domain_actividad2;
+package domain2;
 
 public enum Result {
         WIN, LOSE, DRAW

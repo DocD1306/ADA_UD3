@@ -1,11 +1,14 @@
-package domain_actividad2;
+package domain2;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 import java.time.LocalDate;
 import java.util.List;
 
-@Entity(name = "cabinets")
+@Entity
+@Table(name = "cabinets")
+@Data
 public class Cabinet {
 
     @Id
