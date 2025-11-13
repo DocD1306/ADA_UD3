@@ -2,6 +2,7 @@ package domain;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -32,6 +33,7 @@ public class Venue {
     private String name;
 
     @OneToMany(mappedBy = "venue")
+    @ToString.Exclude
     private List<Space> spaces;
 
 }

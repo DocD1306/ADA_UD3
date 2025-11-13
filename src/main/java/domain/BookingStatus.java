@@ -1,5 +1,5 @@
 package domain;
 
 public enum BookingStatus{
-    AVALIABLE, CONFIRED, CANCELLED
+    AVAILABLE, CONFIRMED, CANCELLED
 }

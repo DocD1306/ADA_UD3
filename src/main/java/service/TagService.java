@@ -7,6 +7,7 @@ import dao.hibernateimpl.SpaceHibernateDao;
 import dao.hibernateimpl.TagHibernateDao;
 import domain.Space;
 import domain.Tag;
+import dto.TagNumberTimesUsed;
 import jakarta.persistence.EntityNotFoundException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -24,6 +25,48 @@ public class TagService {
         this.sessionFactory = HibernateUtil.getSessionFactory();
         this.tagDao = new TagHibernateDao();
         this.spaceDao = new SpaceHibernateDao();
+    }
+
+    public List<Tag> tagsWhereNameStartsLike(String starts){
+
+        Transaction tx = null;
+
+        try{
+
+            Session session = this.sessionFactory.getCurrentSession();
+            tx = session.beginTransaction();
+
+            List<Tag> tags = this.tagDao.tagsWhereNameStartsLike(session, starts);
+
+            tx.commit();
+
+            return tags;
+
+        } catch (RuntimeException e){
+            if (tx != null) tx.rollback();
+            throw new RuntimeException(e);
+        }
+    }
+
+    public List<TagNumberTimesUsed> mostUsedTags(){
+
+        Transaction tx = null;
+
+        try{
+
+            Session session = this.sessionFactory.getCurrentSession();
+            tx = session.beginTransaction();
+
+            List<TagNumberTimesUsed> tags = this.tagDao.mostUsedTags(session);
+
+            tx.commit();
+
+            return tags;
+
+        } catch (RuntimeException e){
+            if (tx != null) tx.rollback();
+            throw new RuntimeException(e);
+        }
     }
 
     public Long createTag(String name){

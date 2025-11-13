@@ -7,7 +7,9 @@ import dao.hibernateimpl.SpaceHibernateDao;
 import dao.hibernateimpl.VenueHibernateDao;
 import domain.Space;
 import domain.Venue;
+import dto.SpaceConfirmedIncome;
 import dto.SpaceNameVenueCity;
+import dto.SpacesNumberByVenueNameTagNameCombination;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.PersistenceException;
 import jakarta.persistence.TypedQuery;
@@ -15,25 +17,105 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public class SpaceService {
 
-    private final SessionFactory sf;
+    private final SessionFactory sessionFactory;
     private final SpaceDao spaceDao;
     private final VenueDao venueDao;
 
 
     public SpaceService() {
-        this.sf = HibernateUtil.getSessionFactory();
+        this.sessionFactory = HibernateUtil.getSessionFactory();
         this.spaceDao = new SpaceHibernateDao();
         this.venueDao = new VenueHibernateDao();
+    }
+
+    public List<SpacesNumberByVenueNameTagNameCombination> findSpacesNumberByVenueNameTagNameCombination(){
+        Transaction tx = null;
+
+        try {
+            Session session = this.sessionFactory.getCurrentSession();
+            tx = session.beginTransaction();
+
+            List<SpacesNumberByVenueNameTagNameCombination> list = spaceDao.spacesNumberByVenueNameAndTagNameCombination(session);
+
+            tx.commit();
+
+            return list;
+
+        } catch (RuntimeException e){
+            if (tx != null) tx.rollback();
+            throw e;
+        }
+
+    }
+
+    public List<SpaceConfirmedIncome> findTop3SpacesByConfirmedIncome(){
+
+        Transaction tx = null;
+
+        try {
+            Session session = this.sessionFactory.getCurrentSession();
+            tx = session.beginTransaction();
+
+            List<SpaceConfirmedIncome> list = spaceDao.top3SpacesByConfirmedIncome(session);
+
+            tx.commit();
+
+            return list;
+
+        } catch (RuntimeException e){
+            if (tx != null) tx.rollback();
+            throw e;
+        }
+
+    }
+
+    public List<Space> neverReservedSpaces(){
+
+        Transaction tx = null;
+
+        try {
+            Session session = this.sessionFactory.getCurrentSession();
+            tx = session.beginTransaction();
+
+            List<Space> list = spaceDao.neverReservedSpaces(session);
+
+            tx.commit();
+
+            return list;
+
+        } catch (RuntimeException e){
+            if (tx != null) tx.rollback();
+            throw e;
+        }
+
+    }
+
+    public List<Space> findActiveSpacesByMinimumCapacityAndMaxPrice(int minimumCapacity, BigDecimal maxPrice){
+        Transaction tx = null;
+        try {
+            Session session = this.sessionFactory.getCurrentSession();
+            tx = session.beginTransaction();
+
+            List<Space> spaces =  this.spaceDao.spacesByMinimumCapacityAndMaxPrice(session, minimumCapacity, maxPrice);
+
+            tx.commit();
+
+            return spaces;
+        } catch (RuntimeException e){
+            if (tx != null) tx.rollback();
+            throw e;
+        }
     }
 
     public List<String> findTop5CitiesWithMoreSpaces(){
         Transaction tx = null;
         try{
-            Session session = sf.getCurrentSession();
+            Session session = sessionFactory.getCurrentSession();
             tx = session.beginTransaction();
 
 
@@ -52,7 +134,7 @@ public class SpaceService {
     public Long createSpace(Space space, Long venueId){
         Transaction tx = null;
         try{
-            Session session = sf.getCurrentSession();
+            Session session = sessionFactory.getCurrentSession();
             tx = session.beginTransaction();
 
 
@@ -80,7 +162,7 @@ public class SpaceService {
         if(!code.isBlank()){
             Transaction tx = null;
             try{
-                Session session = sf.getCurrentSession();
+                Session session = sessionFactory.getCurrentSession();
                 tx = session.beginTransaction();
 
                 // HQL / JPQL

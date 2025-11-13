@@ -4,6 +4,7 @@ import config.HibernateUtil;
 import dao.VenueDao;
 import dao.hibernateimpl.VenueHibernateDao;
 import domain.Venue;
+import dto.VenueIncomeBetweenDates;
 import jakarta.persistence.PersistenceException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -21,6 +22,26 @@ public class VenueService {
     public VenueService(){
         this.sf = HibernateUtil.getSessionFactory();
         this.venueDao = new VenueHibernateDao();
+    }
+
+    public List<VenueIncomeBetweenDates> venuesIncomeBetweenDates(LocalDateTime startTime, LocalDateTime endTime){
+
+        Transaction tx = null;
+        try{
+            Session session = sf.getCurrentSession();
+            tx = session.beginTransaction();
+
+            List<VenueIncomeBetweenDates> venues = this.venueDao.incomeBetweenDates(session, startTime, endTime);
+
+            tx.commit();
+
+            return venues;
+
+        } catch (PersistenceException e) {
+            if (tx != null) tx.rollback();
+            throw e;
+        }
+
     }
 
     public List<Venue> findVenuesByCity(String city){

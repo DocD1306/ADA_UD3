@@ -2,6 +2,7 @@ package domain;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -43,9 +44,11 @@ public class Space {
             joinColumns = @JoinColumn(name = "space_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id")
     )
+    @ToString.Exclude
     private List<Tag> tags;
 
     @OneToMany(mappedBy = "space")
+    @ToString.Exclude
     private List<Booking> bookings;
 
 }

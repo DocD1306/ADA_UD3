@@ -3,6 +3,7 @@ package domain2;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -23,6 +24,9 @@ public class Cabinet {
 
     @Column(name = "status", nullable = false)
     private Status status;
+
+    @Column(name = "hourly_cost")
+    private BigDecimal hourlyCost;
 
     @ManyToOne()
     @JoinColumn(name = "game_id")

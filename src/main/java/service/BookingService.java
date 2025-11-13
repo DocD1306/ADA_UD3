@@ -18,6 +18,7 @@ import org.hibernate.Transaction;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class BookingService {
 
@@ -31,6 +32,28 @@ public class BookingService {
         this.userDao = new UserHibernateDao();
         this.spaceDao = new SpaceHibernateDao();
         this.bookingDao = new BookingHibernateDao();
+    }
+
+    public List<Booking> findConfirmedBookingByVenueAndRange(String venueName, LocalDateTime startTime, LocalDateTime endTime){
+
+        Transaction tx = null;
+        try{
+            Session session = sessionFactory.getCurrentSession();
+            tx = session.beginTransaction();
+
+            List<Booking> bookings = this.bookingDao.findConfirmedBookingsByVenueAndRange(session, venueName, startTime, endTime);
+
+            tx.commit();
+
+            return bookings;
+
+        } catch (RuntimeException e) {
+            if(tx != null){
+                tx.rollback();
+            }
+            throw e;
+        }
+
     }
 
     public Long create(Long userId, Long spaceId, LocalDateTime start, LocalDateTime end, BigDecimal totalPrice, BookingStatus bookingStatus){
