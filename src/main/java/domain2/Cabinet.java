@@ -2,6 +2,7 @@ package domain2;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -23,9 +24,10 @@ public class Cabinet {
     private LocalDate bulidYear;
 
     @Column(name = "status", nullable = false)
+    @Enumerated(EnumType.STRING)
     private Status status;
 
-    @Column(name = "hourly_cost")
+    @Column(name = "hourly_cost", nullable = false)
     private BigDecimal hourlyCost;
 
     @ManyToOne()
@@ -42,6 +44,7 @@ public class Cabinet {
             joinColumns = @JoinColumn(name = "cabinet_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id")
     )
+    @ToString.Exclude
     private List<Tag> tags;
 
 

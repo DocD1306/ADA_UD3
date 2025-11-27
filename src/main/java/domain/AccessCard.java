@@ -23,7 +23,7 @@ public class AccessCard {
     @Column(name = "issuedAt", nullable = false)
     private LocalDateTime issuedAt;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "user_id", nullable = false, unique = true)
     private User user;
 

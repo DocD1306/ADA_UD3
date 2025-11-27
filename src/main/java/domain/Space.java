@@ -34,11 +34,11 @@ public class Space {
     @Column(name = "type", nullable = false)
     private SpaceType type;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "venue_id", nullable = false)
     private Venue venue;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "space_tag",
             joinColumns = @JoinColumn(name = "space_id"),
@@ -47,7 +47,7 @@ public class Space {
     @ToString.Exclude
     private List<Tag> tags;
 
-    @OneToMany(mappedBy = "space")
+    @OneToMany(mappedBy = "space", fetch = FetchType.LAZY, orphanRemoval = false)
     @ToString.Exclude
     private List<Booking> bookings;
 

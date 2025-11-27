@@ -17,6 +17,9 @@ public class Game {
     @Column(name = "code", unique = true, nullable = false)
     private String code;
 
+    @Column(name = "genre", nullable = false)
+    private String genre;
+
     @Column(name = "name", nullable = false)
     private String name;
 

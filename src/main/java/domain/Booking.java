@@ -41,14 +41,14 @@ public class Booking {
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal totalPrice;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER, optional = true)
     @JoinColumn(name = "user_id")
     @ToString.Exclude
     private User user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @ToString.Exclude
-    @JoinColumn(name = "space_id")
+    @JoinColumn(name = "space_id", nullable = false)
     private Space space;
 
 }

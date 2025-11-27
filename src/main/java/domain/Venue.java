@@ -32,7 +32,7 @@ public class Venue {
     @Column(name = "name", nullable = false, length = 150)
     private String name;
 
-    @OneToMany(mappedBy = "venue")
+    @OneToMany(mappedBy = "venue", fetch = FetchType.LAZY, orphanRemoval = false)
     @ToString.Exclude
     private List<Space> spaces;
 

@@ -1,11 +1,19 @@
 package domain2;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "arcades")
 @Data
+@NamedQuery(
+        name = "Arcade.arcadeByName",
+        query = "FROM Arcade WHERE name = :name"
+)
+@NoArgsConstructor
+@AllArgsConstructor
 public class Arcade {
 
     @Id

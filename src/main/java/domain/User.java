@@ -24,10 +24,10 @@ public class User {
     @Column(name = "fullName", nullable = false, length = 150)
     private String fullName;
 
-    @OneToOne(mappedBy = "user")
+    @OneToOne(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true, optional = true)
     private AccessCard accessCard;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, orphanRemoval = false)
     private List<Booking> bookings;
 
 

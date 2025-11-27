@@ -1,14 +1,10 @@
 import config.HibernateUtil;
-import domain2.Result;
-import domain2.Status;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import service2.CabinetService;
-import service2.MatchService;
-import service2.PlayerService;
+import service2.*;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class Main2 {
 
@@ -17,36 +13,22 @@ public class Main2 {
         CabinetService cabinetService = new CabinetService();
         PlayerService playerService = new PlayerService();
         MatchService matchService = new MatchService();
+        ArcadeService arcadeService = new ArcadeService();
+        GameService gameService = new GameService();
 
         Transaction tx = null;
         try {
             SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
             Session session = sessionFactory.openSession();
             tx = session.beginTransaction();
-            LocalDate date = LocalDate.of(2006, 1, 2);
 
-            Long arcadeId = cabinetService.createArcade("Arcade1", "Calle arcade 1");
-            Long gameId = cabinetService.createGame("Game-001", "Juego1", date);
+            System.out.println("\nArcades por nombre\n" + arcadeService.findByName("Arcade1"));
+            System.out.println("\nTop jeugos por número de partidas en rango de fechas\n" + gameService.topGamesByNumberTimesPlayed(LocalDateTime.now().minusDays(50), LocalDateTime.now().plusDays(50)));
+            System.out.println("\nIngresos estimados por arcade\n"+arcadeService.estimatedIncomesByArcade());
+            System.out.println("\nCabinets activos por genero\n" +cabinetService.findActiveCabinetsByGenre("action"));
+            System.out.println("\nJugadores con tarjeta inactiva con partidas recientes\n"+playerService.findInactivePlayersWithRecentMatches(LocalDateTime.now().minusDays(100)));
+            System.out.println("\nCabinets sin juegos desde\n"+cabinetService.findCabinetsWithNoGamesSince(LocalDateTime.now()));
 
-            Long cabinetId = cabinetService.createCabinet("slug-001", date, Status.ACTIVE, gameId, arcadeId);
-
-            cabinetService.assignArcadeToCabinet(cabinetId, arcadeId);
-            cabinetService.assignGameToCabinet(cabinetId, gameId);
-
-            Long playerId = playerService.createPlayer("player1", "player1@gmail.com");
-
-            Long rfidCardId = playerService.emitRfidCard(playerId, "uid-001");
-
-            Long tagId =cabinetService.createTag("tag1");
-
-            cabinetService.addTagToCabinet(cabinetId, tagId);
-
-            matchService.createMatch(rfidCardId, cabinetId, Result.WIN);
-            matchService.createMatch(rfidCardId, cabinetId, Result.LOSE);
-
-            System.out.println(matchService.listMatches());
-
-            cabinetService.updateCabinetStatus(cabinetId, Status.MAINTENANCE);
 
             tx.commit();
             System.out.println("Todas las operaciones realizadas");

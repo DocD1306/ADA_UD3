@@ -10,12 +10,14 @@ import dao2.hibernateimpl2.CabinetHibernateDao;
 import dao2.hibernateimpl2.GameHibernateDao;
 import dao2.hibernateimpl2.TagHibernateDao;
 import domain2.*;
+import dto2.ActiveCabinetsByGenre;
 import jakarta.persistence.EntityNotFoundException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class CabinetService {
@@ -32,6 +34,47 @@ public class CabinetService {
         this.gameDao = new GameHibernateDao();
         this.tagDao = new TagHibernateDao();
         this.cabinetDao = new CabinetHibernateDao();
+    }
+
+    public List<Cabinet> findCabinetsWithNoGamesSince(LocalDateTime rangeDate){
+
+        Transaction tx = null;
+
+        try{
+            Session session = this.sessionFactory.getCurrentSession();
+            tx = session.beginTransaction();
+
+            List<Cabinet> cabinets = this.cabinetDao.cabinetsWithoutGamesSince(session, rangeDate);
+
+            tx.commit();
+
+            return cabinets;
+
+        } catch (RuntimeException e){
+            if (tx != null) tx.rollback();
+            throw e;
+        }
+    }
+
+    public List<ActiveCabinetsByGenre> findActiveCabinetsByGenre(String genre){
+
+        Transaction tx = null;
+
+        try{
+            Session session = this.sessionFactory.getCurrentSession();
+            tx = session.beginTransaction();
+
+            List<ActiveCabinetsByGenre> cabinets = this.cabinetDao.activeCabinetsByGenre(session, genre);
+
+            tx.commit();
+
+            return cabinets;
+
+        } catch (RuntimeException e){
+            if (tx != null) tx.rollback();
+            throw e;
+        }
+
     }
 
     public void updateCabinetStatus(Long cabinetId, Status status){
@@ -124,56 +167,8 @@ public class CabinetService {
 
     }
 
-    public Long createGame(String code, String name, LocalDate releaseYear){
 
-        Transaction tx = null;
 
-        try{
-            Session session = this.sessionFactory.getCurrentSession();
-            tx = session.beginTransaction();
-
-            Game game = new Game();
-            game.setCode(code);
-            game.setName(name);
-            game.setReleaseYear(releaseYear);
-
-            Long id = this.gameDao.create(session, game);
-
-            tx.commit();
-
-            return id;
-
-        } catch (RuntimeException e){
-            if (tx != null) tx.rollback();
-            throw e;
-        }
-
-    }
-
-    public Long createArcade(String name, String address){
-
-        Transaction tx = null;
-
-        try{
-            Session session = this.sessionFactory.getCurrentSession();
-            tx = session.beginTransaction();
-
-            Arcade arcade = new Arcade();
-            arcade.setName(name);
-            arcade.setAddress(address);
-
-            Long id = this.arcadeDao.create(session, arcade);
-
-            tx.commit();
-
-            return id;
-
-        } catch (RuntimeException e){
-            if (tx != null) tx.rollback();
-            throw e;
-        }
-
-    }
 
     public void assignArcadeToCabinet(Long cabinetId, Long arcadeId){
 

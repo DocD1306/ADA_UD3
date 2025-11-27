@@ -17,6 +17,9 @@ public class Match {
     @Column(name = "started_at", nullable = false)
     private LocalDateTime startedAt;
 
+    @Column(name = "end_at", nullable = false)
+    private LocalDateTime endAt;
+
     @Column(name = "duration_sec", nullable = false)
     private long durationSec;
 

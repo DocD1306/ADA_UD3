@@ -14,6 +14,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class PlayerService {
 
@@ -25,6 +26,25 @@ public class PlayerService {
         this.sessionFactory = HibernateUtil.getSessionFactory();
         this.playerDao = new PlayerHibernateDao();
         this.rfidCardDao = new RfidCardHibernateDao();
+    }
+
+    public List<Player> findInactivePlayersWithRecentMatches(LocalDateTime filterDate){
+        Transaction tx = null;
+
+        try{
+            Session session = this.sessionFactory.getCurrentSession();
+            tx = session.beginTransaction();
+
+            List<Player> players = this.playerDao.inactivePlayersWithRecentGames(session, filterDate);
+
+            tx.commit();
+
+            return players;
+
+        } catch (RuntimeException e){
+            if (tx != null) tx.rollback();
+            throw e;
+        }
     }
 
     public Long createPlayer(String nickname, String email){
