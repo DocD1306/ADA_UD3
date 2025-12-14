@@ -2,12 +2,15 @@ package domain2;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "games")
 @Data
+@ToString(exclude = {"cabinets"})
 public class Game {
 
     @Id
@@ -25,6 +28,9 @@ public class Game {
 
     @Column(name = "release_year", nullable = false)
     private LocalDate releaseYear;
+
+    @OneToMany(fetch = FetchType.LAZY, orphanRemoval = false, mappedBy = "game")
+    List<Cabinet> cabinets;
 
 
 }

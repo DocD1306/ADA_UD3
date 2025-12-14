@@ -6,11 +6,14 @@ import lombok.ToString;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "cabinets")
 @Data
+@ToString(exclude = {"tags", "matches"})
 public class Cabinet {
 
     @Id
@@ -30,22 +33,24 @@ public class Cabinet {
     @Column(name = "hourly_cost", nullable = false)
     private BigDecimal hourlyCost;
 
-    @ManyToOne()
-    @JoinColumn(name = "game_id")
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "game_id", nullable = false)
     private Game game;
 
-    @ManyToOne
-    @JoinColumn(name = "arcade_id")
+    @ManyToOne(fetch = FetchType.EAGER,optional = false)
+    @JoinColumn(name = "arcade_id", nullable = false)
     private Arcade arcade;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "cabinet_tag",
             joinColumns = @JoinColumn(name = "cabinet_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id")
     )
-    @ToString.Exclude
     private List<Tag> tags;
+
+    @OneToMany(mappedBy = "cabinet", fetch = FetchType.LAZY)
+    private Set<Match> matches = new HashSet<>();
 
 
 }

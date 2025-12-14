@@ -6,6 +6,7 @@ import dao.VenueDao;
 import dao.hibernateimpl.SpaceHibernateDao;
 import dao.hibernateimpl.VenueHibernateDao;
 import domain.Space;
+import domain.SpaceType;
 import domain.Venue;
 import dto.SpaceConfirmedIncome;
 import dto.SpaceNameVenueCity;
@@ -123,6 +124,39 @@ public class SpaceService {
 
             tx.commit();
             return cities;
+        } catch (PersistenceException e) {
+            if(tx != null){
+                tx.rollback();
+            }
+            throw e;
+        }
+    }
+
+    public Long createSpace(boolean active, int capacity, String code, BigDecimal hourlyPrice, String name, SpaceType type, Long venueId){
+        Transaction tx = null;
+        try{
+            Session session = sessionFactory.getCurrentSession();
+            tx = session.beginTransaction();
+
+
+            Venue sede = venueDao.findById(session, venueId);
+            if(sede == null){
+                throw new EntityNotFoundException("No existe la sede " + venueId);
+            }
+
+            Space space = new Space();
+            space.setActive(active);
+            space.setCapacity(capacity);
+            space.setCode(code);
+            space.setHourlyPrice(hourlyPrice);
+            space.setName(name);
+            space.setType(type);
+            space.setVenue(sede);
+
+            Long id = spaceDao.create(session, space);
+
+            tx.commit();
+            return id;
         } catch (PersistenceException e) {
             if(tx != null){
                 tx.rollback();

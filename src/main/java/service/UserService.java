@@ -27,6 +27,28 @@ public class UserService {
         this.userDao = new UserHibernateDao();
     }
 
+    public void deleteUser(Long userId){
+        Transaction tx = null;
+
+        try{
+            Session session = this.sessionFactory.getCurrentSession();
+            tx = session.beginTransaction();
+
+            User user = this.userDao.findById(session, userId);
+
+            if (user == null){
+                throw new EntityNotFoundException("No existe ningún usuario con ID: " + userId);
+            }
+
+            this.userDao.delete(session, user);
+
+            tx.commit();
+        } catch (RuntimeException e) {
+            if(tx != null) tx.rollback();
+            throw new RuntimeException(e);
+        }
+    }
+
     public Long createUser(String email, String fullName){
 
         Transaction tx = null;

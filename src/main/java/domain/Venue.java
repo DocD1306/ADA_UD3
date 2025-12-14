@@ -10,9 +10,13 @@ import java.util.List;
 @Entity
 @Table(name = "venues")
 @Data
+//@NamedQuery(
+//        name="Venue.findByCity",
+//        query = "FROM Venue s WHERE s.city = :city"
+//)
 @NamedQuery(
-        name="Venue.findByCity",
-        query = "FROM Venue s WHERE s.city = :city"
+        name = "Venue.findByCity",
+        query = "SELECT v FROM Venue v WHERE v.city = :city"
 )
 public class Venue {
 

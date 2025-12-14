@@ -19,16 +19,35 @@ public class GameHibernateDao extends GenericHibernateDao<Game, Long> implements
     public List<GameNumberTimesPlayed> topGamesByTimesPlayedBetweenRange(Session session, LocalDateTime startTime, LocalDateTime endTime) {
 
         String hql = """
-                SELECT new dto2.GameNumberTimesPlayed(g, count(m)) 
-                FROM Game g LEFT JOIN Cabinet c on c.game = g LEFT JOIN Match m on m.cabinet = c 
-                WHERE m.startedAt BETWEEN :startTime AND :endTime 
-                AND m.endAt BETWEEN :startTime AND :endTime
-                GROUP BY g""";
-        Query<GameNumberTimesPlayed> query = session.createQuery(hql, GameNumberTimesPlayed.class)
-                .setParameter("startTime", startTime)
-                .setParameter("endTime", endTime);
+            SELECT new dto2.GameNumberTimesPlayed(g, count(*)) 
+            FROM Game g LEFT JOIN g.cabinets c LEFT JOIN c.matches m 
+            WHERE m.startedAt BETWEEN :startTime AND :endTime AND m.endAt BETWEEN :startTime AND :endTime 
+            GROUP BY g ORDER BY count(*) DESC""";
+
+        Query<GameNumberTimesPlayed> query = session.createQuery(hql, GameNumberTimesPlayed.class);
+
+        query.setParameter("startTime", startTime);
+        query.setParameter("endTime", endTime);
 
         return query.getResultList();
 
     }
+
+    //
+//    @Override
+//    public List<GameNumberTimesPlayed> topGamesByTimesPlayedBetweenRange(Session session, LocalDateTime startTime, LocalDateTime endTime) {
+//
+//        String hql = """
+//                SELECT new dto2.GameNumberTimesPlayed(g, count(m))
+//                FROM Game g LEFT JOIN Cabinet c on c.game = g LEFT JOIN Match m on m.cabinet = c
+//                WHERE m.startedAt BETWEEN :startTime AND :endTime
+//                AND m.endAt BETWEEN :startTime AND :endTime
+//                GROUP BY g""";
+//        Query<GameNumberTimesPlayed> query = session.createQuery(hql, GameNumberTimesPlayed.class)
+//                .setParameter("startTime", startTime)
+//                .setParameter("endTime", endTime);
+//
+//        return query.getResultList();
+//
+//    }
 }

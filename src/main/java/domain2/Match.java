@@ -2,12 +2,14 @@ package domain2;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "matches")
 @Data
+@ToString(exclude = {"rfidCard"})
 public class Match {
 
     @Id
@@ -33,11 +35,11 @@ public class Match {
     @Column(name = "credits_used", nullable = false)
     private long creditsUsed;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "rfid_card_id", nullable = false)
     private RfidCard rfidCard;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "cabinet_id", nullable = false)
     private Cabinet cabinet;
 

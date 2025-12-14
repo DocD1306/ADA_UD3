@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 
 public class Main2 {
 
+
     public static void main(String[] args) {
 
         CabinetService cabinetService = new CabinetService();
@@ -23,7 +24,7 @@ public class Main2 {
             tx = session.beginTransaction();
 
             System.out.println("\nArcades por nombre\n" + arcadeService.findByName("Arcade1"));
-            System.out.println("\nTop jeugos por número de partidas en rango de fechas\n" + gameService.topGamesByNumberTimesPlayed(LocalDateTime.now().minusDays(50), LocalDateTime.now().plusDays(50)));
+            System.out.println("\nTop jeugos por número de partidas en rango de fechas\n" + gameService.topGamesByNumberTimesPlayed(LocalDateTime.now().minusDays(220), LocalDateTime.now().plusDays(150)));
             System.out.println("\nIngresos estimados por arcade\n"+arcadeService.estimatedIncomesByArcade());
             System.out.println("\nCabinets activos por genero\n" +cabinetService.findActiveCabinetsByGenre("action"));
             System.out.println("\nJugadores con tarjeta inactiva con partidas recientes\n"+playerService.findInactivePlayersWithRecentMatches(LocalDateTime.now().minusDays(100)));

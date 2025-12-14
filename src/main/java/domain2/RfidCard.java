@@ -2,12 +2,14 @@ package domain2;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 
 @Data
 @Entity
 @Table(name = "rfid_cards")
+@ToString(exclude = "player")
 public class RfidCard {
 
     @Id
@@ -23,7 +25,7 @@ public class RfidCard {
     @Column(name = "active", nullable = false)
     private boolean active;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "player_id", unique = true, nullable = false)
     private Player player;
 

@@ -5,6 +5,48 @@ import java.time.LocalDateTime;
 
 public class Main {
 
+    // Actividad 3.4.2
+//    public static void main(String[] args) {
+//
+//
+//        UserService userService = new UserService();
+//        BookingService bookingService = new BookingService();
+//        TagService tagService = new TagService();
+//        SpaceService spaceService = new SpaceService();
+//        VenueService venueService = new VenueService();
+//
+//        Transaction tx = null;
+//
+//        try {
+//            SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+//            Session session = sessionFactory.openSession();
+//            tx = session.beginTransaction();
+//
+//            Long venueId = venueService.createVenue("Direccion", "Elche", "Venue Inventado");
+//            Long spaceId1 = spaceService.createSpace(true, 50, "AAAB", new BigDecimal(3.3), "Space 1", SpaceType.MEETING_ROOM, venueId);
+//            Long spaceId2 = spaceService.createSpace(true, 50, "AAC", new BigDecimal(3.3), "Space 2", SpaceType.OFFICE, venueId);
+//            venueService.assignSpaceToVenue(spaceId1, venueId);
+//            venueService.assignSpaceToVenue(spaceId2, venueId);
+//
+//            Long userId = userService.createUser("emailuser6@gmail.com", "Usario nombre");
+//
+//            Long accessCardId = userService.assignAccesCard(userId, "1235");
+//
+//            // No se puede eliminar un venue por las claves foráneas de Space que apuntan a esta tabla
+//            //venueService.deleteVenue(venueId);
+//            userService.deleteUser(userId);
+//
+//            System.out.println("TODAS LAS OPERACIONES REALIZADAS CORRECTAMENTE");
+//            tx.rollback();
+//        } catch (Exception e) {
+//            if(tx != null) tx.rollback();
+//            System.err.println(e.getMessage());
+//            e.printStackTrace();
+//        }
+//
+//
+//    }
+
     public static void main(String[] args) {
 
         UserService userService = new UserService();
@@ -30,6 +72,7 @@ public class Main {
             System.out.println(e.getMessage());
             e.printStackTrace();
         }
+    }
 
         /*
 
@@ -65,7 +108,5 @@ Tags con nombre que empiece por un texto dado ignorando mayúsculas y minúscula
 Conteo de espacios por combinación de venue y tag
 [SpacesNumberByVenueNameTagNameCombination[venueName=Venue-001, tagName=etiqueta, combinationNumber=1], SpacesNumberByVenueNameTagNameCombination[venueName=Diego, tagName=wifi, combinationNumber=1]]
          */
-
-    }
 
 }

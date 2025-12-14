@@ -23,7 +23,7 @@ public class Player {
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
-    @OneToOne(mappedBy = "player")
+    @OneToOne(mappedBy = "player", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true, optional = true)
     private RfidCard rfidCard;
 
 
